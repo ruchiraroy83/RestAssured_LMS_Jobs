@@ -14,50 +14,45 @@ public class ExcelUtil {
     /**
      * This class is a utility class and is used to Read Excel sheet
      */
-    public class ExcelReaderUtil {
 
-        String path;
-        FileInputStream fis;
-        Workbook workbook;
-        Sheet sheet;
-        Row row;
+    String path;
+    FileInputStream fis;
+    Workbook workbook;
+    Sheet sheet;
+    Row row;
 
-        public ExcelReaderUtil(String path) {
-            super();
-            this.path = path;
-        }
 
-        public void readSheet(String sheetName) throws Exception {
+    public void readSheet(String path,String sheetName) throws Exception {
 
-            File file = new File(path);
-            fis = new FileInputStream(file);
-            //Below API can ready both xls and xlsx formats
-            workbook = WorkbookFactory.create(fis);
-            sheet = workbook.getSheet(sheetName);
-
-        }
-
-        public Map<String,String>  getDataFromExcel(String columnName) throws IOException {
-            Map<String,String> testData = new HashMap<>();
-            int dataColNum=0;
-            for (int j=0; j<sheet.getRow(0).getPhysicalNumberOfCells();j++ ) {
-                String Key= sheet.getRow(0).getCell(j).getStringCellValue().trim();
-                if (sheet.getRow(0).getCell(j).getStringCellValue().equals(columnName)) {
-                    dataColNum = j;
-                    for (int i=0; i<sheet.getPhysicalNumberOfRows();i++ ) {
-                        String Value = sheet.getRow(i).getCell(dataColNum).getStringCellValue().trim();
-                        testData.put(Key,Value);
-                    }
-                    break;
-                }
-
-            }
-
-            fis.close();
-            return testData;
-        }
+        File file = new File(path);
+        fis = new FileInputStream(file);
+        //Below API can ready both xls and xlsx formats
+        workbook = WorkbookFactory.create(fis);
+        sheet = workbook.getSheet(sheetName);
 
     }
+
+    public Map<String,String>  getDataFromExcel(String columnName) throws IOException {
+        Map<String,String> testData = new HashMap<>();
+        int dataColNum=0;
+        for (int j=0; j<sheet.getRow(0).getPhysicalNumberOfCells();j++ ) {
+            String Key= sheet.getRow(0).getCell(j).getStringCellValue().trim();
+            if (sheet.getRow(0).getCell(j).getStringCellValue().equals(columnName)) {
+                dataColNum = j;
+                for (int i=0; i<sheet.getPhysicalNumberOfRows();i++ ) {
+                    String Value = sheet.getRow(i).getCell(dataColNum).getStringCellValue().trim();
+                    testData.put(Key,Value);
+                }
+                break;
+            }
+
+        }
+
+        fis.close();
+        return testData;
+    }
+
+
     public boolean writeExcelFile(String excelFilePath, String sheetName, int rowNumber, String columnName,
                                   Object cellValue) {
         boolean status;
