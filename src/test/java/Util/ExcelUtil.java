@@ -32,24 +32,24 @@ public class ExcelUtil {
 
     }
 
-    public Map<String,String>  getDataFromExcel(String columnName) throws IOException {
-        Map<String,String> testData = new HashMap<>();
-        int dataColNum=0;
-        for (int j=0; j<sheet.getRow(0).getPhysicalNumberOfCells();j++ ) {
-            String Key= sheet.getRow(0).getCell(j).getStringCellValue().trim();
-            if (sheet.getRow(0).getCell(j).getStringCellValue().equals(columnName)) {
-                dataColNum = j;
-                for (int i=0; i<sheet.getPhysicalNumberOfRows();i++ ) {
-                    String Value = sheet.getRow(i).getCell(dataColNum).getStringCellValue().trim();
-                    testData.put(Key,Value);
-                }
-                break;
+    public Object[][]  getDataFromExcel() throws IOException {
+        int rowCount=sheet.getPhysicalNumberOfRows();
+        int colCount=sheet.getRow(0).getPhysicalNumberOfCells();
+        Object Testdata[][] = new Object[rowCount - 1][colCount];
+
+        for (int i=0; i<rowCount;i++ ) {
+            Map<Object, Object> datamap = new HashMap<>();
+            for (int j=0; j<colCount;j++ ) {
+                String Key = sheet.getRow(0).getCell(j).getStringCellValue().trim();
+                String Value = sheet.getRow(i).getCell(j).getStringCellValue().trim();
+                datamap.put(Key,Value);
+                Testdata[i][j]=datamap;
             }
 
         }
 
         fis.close();
-        return testData;
+        return Testdata;
     }
 
 
