@@ -8,6 +8,7 @@ public class UtilConstants {
     public static final String CONST_EXCELFILEPATH="FilePath";
     public static final String CONST_LMSGETSHEET="LMS_GET";
     public static final String CONST_LMSPOSTSHEET="LMS_POST";
+    public static final String CONST_LMSDELETESHEET="LMS_DELETE";
     public static final String PROG_ID = "programId";
 
 }

@@ -68,11 +68,12 @@ public class Lms_GET_Programs {
         System.out.println(StatusCode);
 
         int status_code_actual = response.getStatusCode();
+        System.out.println(" The Program ID to be retrieved is :" +programId );
         Reporter.log("ProgramId received from Response " + pid);
+
         Assert.assertNotNull(pid);
         Assert.assertNotNull(Integer.parseInt(programId)==pid);
-
-        Assert.assertEquals(Integer.parseInt(StatusCode),status_code_actual);
+        Assert.assertEquals(response.statusCode(),Integer.parseInt(StatusCode));
     }
 
 }
