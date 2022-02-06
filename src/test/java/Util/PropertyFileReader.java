@@ -10,7 +10,7 @@ public class PropertyFileReader {
     public static Properties readPropertiesFile() throws IOException {
         FileInputStream fis = null;
         Properties prop = null;
-        String FilePath="./src/test/resources/PropertyFiles/confiq.properties";
+        String FilePath="./src/test/resources/PropertyFiles/config.properties";
         try {
 
             fis = new FileInputStream(FilePath);
