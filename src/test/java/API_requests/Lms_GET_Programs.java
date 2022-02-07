@@ -25,7 +25,7 @@ public class Lms_GET_Programs {
     }
     @DataProvider
     public Object[][] getData() throws IOException {
-        String path = "./src/test/resources/TestData/LMS_InputData.xlsx";
+        String path = prop.getProperty(CONST_EXCELFILEPATH);
         int rowCount = ExcelUtil.getRowCount(path,CONST_LMSGETSHEET);
         int colCount = ExcelUtil.getCellCount(path,CONST_LMSGETSHEET,rowCount);
         String getprogData[][] = new String[rowCount][colCount];
@@ -33,7 +33,7 @@ public class Lms_GET_Programs {
         for (int i=1;i<=rowCount;i++){
             for(int j=0;j<colCount;j++) {
                 getprogData[i-1][j]=ExcelUtil.getCellData(path,CONST_LMSGETSHEET,i,j);
-                System.out.println(getprogData);
+
             }
         }
 
@@ -62,9 +62,7 @@ public class Lms_GET_Programs {
                 get(RestAssured.baseURI+RestAssured.basePath+ "/" + programId);
         System.out.println(response.asPrettyString());
         if(StatusCode.equals(Success_Status)) {
-            JsonPath jsonpathEvaluator = response.jsonPath();
-            int pid = jsonpathEvaluator.get(PROG_ID);
-            System.out.println(StatusCode);
+            int pid = response.jsonPath().get(PROG_ID);
             Assert.assertEquals(pid, Integer.parseInt(programId));
         }
 

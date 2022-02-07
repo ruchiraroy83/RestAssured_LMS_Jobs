@@ -26,7 +26,7 @@ public class Lms_DELETE_Programs {
     }
     @DataProvider
     public Object[][] deleteData() throws IOException {
-        String path = "./src/test/resources/TestData/LMS_InputData.xlsx";
+        String path = prop.getProperty(CONST_EXCELFILEPATH);
         int rowCount = ExcelUtil.getRowCount(path,CONST_LMSDELETESHEET);
         int colCount = ExcelUtil.getCellCount(path,CONST_LMSDELETESHEET,rowCount);
         String getprogData[][] = new String[rowCount][colCount];
@@ -34,7 +34,6 @@ public class Lms_DELETE_Programs {
         for (int i=1;i<=rowCount;i++){
             for(int j=0;j<colCount;j++) {
                 getprogData[i-1][j]=ExcelUtil.getCellData(path,CONST_LMSDELETESHEET,i,j);
-                System.out.println(getprogData);
             }
         }
 

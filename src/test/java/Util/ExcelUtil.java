@@ -15,13 +15,10 @@ public class ExcelUtil {
     public static int getRowCount(String xlFile, String xlSheet) throws IOException {
         Workbook workbook;
         Sheet sheet;
-
         fi = new FileInputStream(xlFile);
         workbook = WorkbookFactory.create(fi);
         sheet = workbook.getSheet(xlSheet);
         int rowCount = sheet.getLastRowNum();
-        System.out.println("Rowcount" + rowCount);
-
         workbook.close();
         fi.close();
         return rowCount;
@@ -35,7 +32,6 @@ public class ExcelUtil {
         sheet = workbook.getSheet(xlSheet);
         row = sheet.getRow(rowNum);
         int columnCount = row.getLastCellNum();
-        System.out.println("ColumnCount" + columnCount);
         workbook.close();
         fi.close();
         return columnCount;
