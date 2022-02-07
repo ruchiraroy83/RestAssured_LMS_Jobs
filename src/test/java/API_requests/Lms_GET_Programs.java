@@ -48,9 +48,7 @@ public class Lms_GET_Programs {
         Response response = given().auth().basic(prop.getProperty(CONST_USERNAME),prop.getProperty(CONST_PWD)).when().
                 get(RestAssured.baseURI+RestAssured.basePath);
         int status_code = response.statusCode();
-
-
-        System.out.println(response.asString());
+        System.out.println(response.asPrettyString());
         Assert.assertEquals(status_code,200);
 
     }
@@ -62,18 +60,19 @@ public class Lms_GET_Programs {
         RestAssured.basePath=prop.getProperty(CONST_PATH);
         Response response = given().auth().basic(prop.getProperty(CONST_USERNAME),prop.getProperty(CONST_PWD)).when().
                 get(RestAssured.baseURI+RestAssured.basePath+ "/" + programId);
-
-        JsonPath jsonpathEvaluator = response.jsonPath();
-        int pid = jsonpathEvaluator.get(PROG_ID);
-        System.out.println(StatusCode);
+        System.out.println(response.asPrettyString());
+        if(StatusCode.equals(Success_Status)) {
+            JsonPath jsonpathEvaluator = response.jsonPath();
+            int pid = jsonpathEvaluator.get(PROG_ID);
+            System.out.println(StatusCode);
+            Assert.assertEquals(pid, Integer.parseInt(programId));
+        }
 
         int status_code_actual = response.getStatusCode();
         System.out.println(" The Program ID to be retrieved is :" +programId );
-        Reporter.log("ProgramId received from Response " + pid);
-
-        Assert.assertNotNull(pid);
-        Assert.assertNotNull(Integer.parseInt(programId)==pid);
         Assert.assertEquals(response.statusCode(),Integer.parseInt(StatusCode));
+
+
     }
 
 }

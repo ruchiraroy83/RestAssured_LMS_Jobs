@@ -10,5 +10,9 @@ public class UtilConstants {
     public static final String CONST_LMSPOSTSHEET="LMS_POST";
     public static final String CONST_LMSDELETESHEET="LMS_DELETE";
     public static final String PROG_ID = "programId";
+    public static final String PROG_Name ="programName";
+    public static final String PROG_desc ="programDescription";
+    public static final String Online_Status ="online";
+    public static final String Success_Status="200";
 
 }

@@ -64,7 +64,7 @@ public class ExcelUtil {
         fi.close();
         return data;
     }
-    public static void setCellData(String xlFile, String xlSheet, int rowNum, int columnNum, String data) throws IOException {
+    public static void setCellData(String xlFile, String xlSheet, int rowNum, String columnName, String data) throws IOException {
         Workbook workbook;
         Sheet sheet;
         Row row;
@@ -73,6 +73,17 @@ public class ExcelUtil {
         workbook = WorkbookFactory.create(fi);
         sheet = workbook.getSheet(xlSheet);
         row = sheet.getRow(rowNum);
+        int colCount=row.getPhysicalNumberOfCells();
+        String colName;
+        int columnNum = 0;
+        for(int j=0;j<colCount;j++){
+            colName = String.valueOf(sheet.getRow(0).getCell(j)).trim();
+            if (colName.equals(columnName)){
+                columnNum=j;
+                break;
+            }
+        }
+
         cell = row.getCell(columnNum);
         fi = new FileInputStream(xlFile);
         cell.setCellValue(data);
@@ -82,5 +93,6 @@ public class ExcelUtil {
         fo.close();
         fi.close();
     }
+
 }
 
