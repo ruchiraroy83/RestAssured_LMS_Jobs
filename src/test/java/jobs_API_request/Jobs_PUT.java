@@ -47,7 +47,7 @@ public class Jobs_PUT {
     }
 
     @Test(dataProvider="putData")
-    public void updateJob(String Job_Id,String Job_Title,String Job_Company_Name,String Job_Location,
+    public void updateJob(String Scenario,String Job_Id,String Job_Title,String Job_Company_Name,String Job_Location,
                       String Job_Type,String Job_Posted_time,String Job_Description,String StatusCode_expected) throws IOException, Throwable {
         //Specify base URI
         RestAssured.baseURI=prop.getProperty(CONST_URL);
@@ -59,8 +59,8 @@ public class Jobs_PUT {
         String responsebody=response.getBody().asString();
         Assert.assertEquals(response.getStatusCode(),Integer.parseInt(StatusCode_expected));
         String responseBody = response.getBody().asPrettyString();
-     	System.out.println("The Response Body is :"+responseBody);
-     	Reporter.log("The Response Body is :"+responseBody);
+     	System.out.println("The Response Body is :"+responseBody +"For Scenario :" +Scenario);
+     	Reporter.log("The Response Body is :"+responseBody +"For Scenario :" +Scenario);
 		   if (Job_Id!=null) {
 		   Assert.assertEquals(responsebody.contains(Job_Id),true,"Job Id assertion");
 		   }

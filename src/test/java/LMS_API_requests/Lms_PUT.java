@@ -56,7 +56,7 @@ public class Lms_PUT {
         RestAssured.baseURI=prop.getProperty(CONST_URL);
         RestAssured.basePath=prop.getProperty(CONST_PATH);
         JSONObject requestParam=new JSONObject();
-        requestParam.put("programId", Integer.parseInt(programId));
+//        requestParam.put("programId", Integer.parseInt(programId));
         if (programName!=null) {
         	requestParam.put("programName", programName);
         }
@@ -72,12 +72,7 @@ public class Lms_PUT {
         System.out.println(response.getBody().asPrettyString());
         Reporter.log("For scenario :" + Scenario +". the Response body is :" + response.getBody().asPrettyString());
 
-        System.out.println(Status_code_expected);
-
-        int status_code_actual = response.getStatusCode();
-        Reporter.log(Status_code_expected);
-
-        Assert.assertEquals(Integer.parseInt(Status_code_expected),status_code_actual);
+        Assert.assertEquals(Integer.parseInt(Status_code_expected),response.getStatusCode(),"Status Code Validation");
         //Validating input with output
         if (Status_code_expected.equals(Success_Status)){
             Assert.assertEquals(response.jsonPath().get("programId").toString(),programId,"programId Assertion :");

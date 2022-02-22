@@ -41,7 +41,7 @@ public class Jobs_Delete {
     }
 
     @Test(dataProvider = "deleteData")
-    public void delete_job_id(String jobId, String StatusCode) {
+    public void delete_job_id(String Scenario,String jobId, String StatusCode) {
         RestAssured.baseURI=prop.getProperty(CONST_URL);
         RestAssured.basePath=prop.getProperty(CONST_PATH);
         Response response = given().queryParam("Job Id", jobId).when().delete(RestAssured.baseURI+RestAssured.basePath);

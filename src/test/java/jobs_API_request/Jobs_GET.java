@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.given;
 import java.util.Properties;
 
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.Test;
 
 import Util.PropertyFileReader;
@@ -28,8 +29,9 @@ public class Jobs_GET {
 		Response response = given().when().get(RestAssured.baseURI + RestAssured.basePath);
 		int status_code = response.statusCode();
 
-		System.out.println(response.asString());
-		Assert.assertEquals(status_code, 200);
+		System.out.println("Response Body is :" +response.asPrettyString());
+		Assert.assertEquals(status_code, 200,"Status Code Validation");
+		Reporter.log("Response Body is :" +response.asPrettyString());
 
 	}
 

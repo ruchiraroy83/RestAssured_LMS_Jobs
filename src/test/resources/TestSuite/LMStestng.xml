@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite thread-count="4" parallel="tests" name="JobsAPI">
+  <test thread-count="4" parallel="tests" name="JobsTestSuite">
+    <classes>
+      <class name="LMS_API_requests.Lms_PUT"/>
+      <class name="LMS_API_requests.Lms_POST"/>
+      <class name="LMS_API_requests.Lms_GET_Programs"/>
+      <class name="LMS_API_requests.Lms_DELETE_Programs"/>
+    </classes>
+  </test> <!-- JobsTestSuite -->
+</suite> <!-- JobsAPI -->

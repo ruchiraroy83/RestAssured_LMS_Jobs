@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import org.json.simple.JSONObject;
 import org.testng.Assert;
+import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -55,7 +56,7 @@ public class Jobs_POST{
 	    }
 	 
 	 @Test(dataProvider = "PostJobsData")
-	 public void createJob(String Job_Title,String Job_Company_Name,String Job_Location,
+	 public void createJob(String Scenario,String Job_Title,String Job_Company_Name,String Job_Location,
 			 String Job_Type,String Job_Posted_time,String Job_Description,String Job_Id,String status_Code_expected) throws JsonMappingException, JsonProcessingException {
 		 
 		 RestAssured.baseURI=prop.getProperty(CONST_URL);
@@ -74,14 +75,10 @@ public class Jobs_POST{
 				   .then().log().all().extract().response();
     
      String responseBody = response.getBody().asPrettyString();
-     	System.out.println("The Response Body is :"+responseBody);
         
      	ObjectMapper mapper = new ObjectMapper();     	
      	mapper.enable(JsonReadFeature.ALLOW_NON_NUMERIC_NUMBERS.mappedFeature());
-     	     	
-     	
-     	// HashMap<String, String> obj = mapper.readValue(responseBody, HashMap.class); 
-     	
+     	     	     	
      	LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String,String>>> map =
      			(LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String,String>>>) mapper.readValue(responseBody, Map.class); 
      	
@@ -100,54 +97,49 @@ public class Jobs_POST{
      		String pos = jobTitleMap.size() - 1  + ""; 
      		exp_jobTitle = jobTitleMap.get(pos);     		
      		System.out.println("The job title Created : " + exp_jobTitle);
-     		Assert.assertEquals(Job_Title, exp_jobTitle);
+     		Assert.assertEquals(Job_Title, exp_jobTitle,"Job Title Validation");
      		
      		LinkedHashMap<String, String> jobCompanyNameMap = (LinkedHashMap<String,String>) dataMap.get("Job Company Name");
      		pos = jobCompanyNameMap.size() - 1  + ""; 
      		exp_jobCompanyName = jobCompanyNameMap.get(pos);
      		System.out.println("The job CompanyName Created : " +exp_jobCompanyName);
-     		Assert.assertEquals(Job_Company_Name, exp_jobCompanyName);
+     		Assert.assertEquals(Job_Company_Name, exp_jobCompanyName,"Company Name Validation");
      		
      		LinkedHashMap<String, String> jobLocationMap = (LinkedHashMap<String,String>) dataMap.get("Job Location");
      		pos = jobLocationMap.size() - 1  + ""; 
      		exp_jobLocation = jobLocationMap.get(pos);
      		System.out.println("The job Location Created : " +exp_jobLocation);
-     		Assert.assertEquals(Job_Location, exp_jobLocation);
+     		Assert.assertEquals(Job_Location, exp_jobLocation,"Job location Validation");
      		
      		LinkedHashMap<String, String> jobTypeMap = (LinkedHashMap<String,String>) dataMap.get("Job Type");
      		pos = jobTypeMap.size() - 1  + ""; 
      		exp_jobType = jobTypeMap.get(pos);
      		System.out.println("The Job Type Created : " +exp_jobType);
-     		Assert.assertEquals(Job_Type, exp_jobType);
+     		Assert.assertEquals(Job_Type, exp_jobType,"Job Type Validation");
      		
      		LinkedHashMap<String, String> jobPostedTimeMap = (LinkedHashMap<String,String>) dataMap.get("Job Posted time");
      		pos = jobPostedTimeMap.size() - 1  + ""; 
      		exp_jobPostedTime = jobPostedTimeMap.get(pos);
      		System.out.println("The Job Posted time Created : " +exp_jobPostedTime);
-     		Assert.assertEquals(Job_Posted_time, exp_jobPostedTime);
+     		Assert.assertEquals(Job_Posted_time, exp_jobPostedTime,"Job Posted Time Validation");
      		
      		LinkedHashMap<String, String> jobDescriptionMap = (LinkedHashMap<String,String>) dataMap.get("Job Description");
      		pos = jobDescriptionMap.size() - 1  + ""; 
      		exp_jobDescription = jobDescriptionMap.get(pos);
      		System.out.println("The job Description Created : " +exp_jobDescription);
-     		Assert.assertEquals(Job_Description, exp_jobDescription);
+     		Assert.assertEquals(Job_Description, exp_jobDescription,"Job Description Validation");
      		
      		LinkedHashMap<String, String> jobIdMap = (LinkedHashMap<String,String>) dataMap.get("Job Id");
      		pos = jobIdMap.size() - 1  + ""; 
      		exp_jobId = jobIdMap.get(pos);
      		System.out.println("The job Id Created : " +exp_jobId);
-//     		Assert.assertEquals(Job_Id, exp_jobId);
+     		Reporter.log("The job Id Created : " +exp_jobId +"For Scenario :" +Scenario);
      	}
      	
-      String result = response.asPrettyString();
-      result = result.replace("NaN", "null");
-     
-      // String result ="{\"data\": {\"Job Title\": {\"0\": \"SDET\"},\"Job Company Name\": {\"0\": \"Signature Consultants\" },\"Job Location\": {\"0\": \"Vinings, GA, USA\"},\"Job Type\": {\"0\": \"Contract\"},\"Job Posted time\": {\"0\": \"44 minutes ago\"},\"Job Description\": {\"0\": \"Desc\"}, \"Job Id\": {\"0\": \"1001\"}}}";
-      // String result ="{\"data\": {\"Job Title\": {\"0\": \"SDET\"}}}";     
-     assertThat("Schema Validation Failed",result, JsonSchemaValidator.matchesJsonSchemaInClasspath("JSON_SCHEMAS\\JobsResponse.json"));
-//      response.then().assertThat().body(Matchers.notNullValue()).
-//      body(JsonSchemaValidator.matchesJsonSchemaInClasspath(prop.getProperty(CONST_PostSchemaFilePath)));
-      //  Assert.assertEquals(response.getStatusCode(),Integer.parseInt(status_Code_expected)); 
+      Reporter.log("Response is :"+responseBody + "For Scenario :"+ Scenario);
+      responseBody = responseBody.replace("NaN", "null");    
+     assertThat("Schema Validation Failed",responseBody, JsonSchemaValidator.matchesJsonSchemaInClasspath("JSON_SCHEMAS\\JobsResponse.json"));
+
         
 	 }
 	 
