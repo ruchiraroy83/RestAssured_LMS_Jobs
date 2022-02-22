@@ -1,4 +1,4 @@
-package API_requests;
+package LMS_API_requests;
 
 
 import Util.ExcelUtil;
@@ -14,14 +14,14 @@ import org.testng.annotations.Test;
 import java.io.IOException;
 import java.util.Properties;
 
-import static Util.UtilConstants.*;
+import static Util.LMSUtilConstants.*;
 import static io.restassured.RestAssured.given;
 
 public class Lms_DELETE_Programs {
     Properties prop;
 
     public Lms_DELETE_Programs() throws Exception {
-        prop = PropertyFileReader.readPropertiesFile();
+        prop = PropertyFileReader.readPropertiesFile("LMS");
 
     }
     @DataProvider

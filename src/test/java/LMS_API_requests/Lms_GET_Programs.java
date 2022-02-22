@@ -1,6 +1,7 @@
-package API_requests;
+package LMS_API_requests;
 
 import Util.ExcelUtil;
+import Util.JSON_Schema_Validation;
 import Util.PropertyFileReader;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -14,13 +15,13 @@ import java.io.IOException;
 import java.util.Properties;
 
 
-import static Util.UtilConstants.*;
+import static Util.LMSUtilConstants.*;
 import static io.restassured.RestAssured.given;
 
 public class Lms_GET_Programs {
     Properties prop;
     public Lms_GET_Programs() throws Exception {
-        prop = PropertyFileReader.readPropertiesFile();
+        prop = PropertyFileReader.readPropertiesFile("LMS");
 
     }
     @DataProvider
@@ -61,10 +62,17 @@ public class Lms_GET_Programs {
         Response response = given().auth().basic(prop.getProperty(CONST_USERNAME),prop.getProperty(CONST_PWD)).when().
                 get(RestAssured.baseURI+RestAssured.basePath+ "/" + programId);
         System.out.println(response.asPrettyString());
-        if(StatusCode.equals(Success_Status)) {
-            int pid = response.jsonPath().get(PROG_ID);
-            Assert.assertEquals(pid, Integer.parseInt(programId));
+        try {
+            if(StatusCode.equals(Success_Status)) {
+                int pid = response.jsonPath().get(PROG_ID);
+                Assert.assertEquals(pid, Integer.parseInt(programId));
+                JSON_Schema_Validation.cls_JSON_SchemaValidation(response,
+                        prop.getProperty(CONST_PostSchemaFilePath));
+            }
+        } catch(Exception e ){
+            System.out.println("ProgramID is entered is not valid");
         }
+
 
         int status_code_actual = response.getStatusCode();
         System.out.println(" The Program ID to be retrieved is :" +programId );
