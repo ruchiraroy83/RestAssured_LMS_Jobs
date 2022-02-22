@@ -38,9 +38,7 @@ public class Lms_POST {
                 getpostData[i-1][j]=ExcelUtil.getCellData(path,CONST_LMSPOSTSHEET,i,j);
             }
         }
-
         return getpostData;
-
     }
 
 
@@ -49,26 +47,22 @@ public class Lms_POST {
         RestAssured.baseURI=prop.getProperty(CONST_URL);
         RestAssured.basePath=prop.getProperty(CONST_PATH);
         Response response = given().auth().preemptive().basic(prop.getProperty(CONST_USERNAME),prop.getProperty(CONST_PWD)).header("Content-Type", "application/json").body(body).post(RestAssured.baseURI+RestAssured.basePath);
-        System.out.println(response.asString());
-
-        System.out.println(Status_code_expected);
+        System.out.println("Scenario is :"+Scenario+ ".And Response is :" + response.asPrettyString() );
+        Reporter.log("Scenario is :"+Scenario+ ".And Response is :" + response.asPrettyString() );
 
         int status_code_actual = response.getStatusCode();
 
-        Assert.assertEquals(Integer.parseInt(Status_code_expected),status_code_actual);
+        Assert.assertEquals(Integer.parseInt(Status_code_expected),status_code_actual,"Status Code Validation");
         //Validating input with output
         
         try {
 			if (Status_code_expected.equals(Success_Status)){
-			    Assert.assertEquals(body.contains(response.jsonPath().get(PROG_Name)),true);
-			    Assert.assertEquals(body.contains(response.jsonPath().get(PROG_desc)),true);
-			    Assert.assertEquals(body.contains(response.jsonPath().get(Online_Status).toString()),true);
-//			    response.then().assertThat().body(Matchers.notNullValue())
-//			            .body(JsonSchemaValidator.matchesJsonSchemaInClasspath(prop.getProperty(CONST_PostSchemaFilePath)));
-//			    response.then().assertThat().body(Matchers.notNullValue()).
-//	 	        body(JsonSchemaValidator.matchesJsonSchemaInClasspath(prop.getProperty(CONST_PostSchemaFilePath)));
-            JSON_Schema_Validation.cls_JSON_SchemaValidation(response,
-                    prop.getProperty(CONST_PostSchemaFilePath));
+			    Assert.assertEquals(body.contains(response.jsonPath().get(PROG_Name)),true,"PragramName Validation");
+			    Assert.assertEquals(body.contains(response.jsonPath().get(PROG_desc)),true,"Program Description Validation");
+			    Assert.assertEquals(body.contains(response.jsonPath().get(Online_Status).toString()),true,"Online Status Validation");
+
+			    JSON_Schema_Validation.cls_JSON_SchemaValidation(response,prop.getProperty(CONST_PostSchemaFilePath));
+			    Reporter.log("The Program Id Generated id :" +response.jsonPath().get(PROG_ID)+ " for Scenario :" +Scenario);
 			    given().auth().preemptive().basic(prop.getProperty(CONST_USERNAME),prop.getProperty(CONST_PWD)).when().
 			            delete(RestAssured.baseURI+RestAssured.basePath+"/" +response.jsonPath().get(PROG_ID));
 

@@ -42,13 +42,15 @@ public class Lms_DELETE_Programs {
     }
 
     @Test(dataProvider = "deleteData")
-    public void delete_program_id(String programId, String StatusCode) {
+    public void delete_program_id(String Scenario,String programId, String StatusCode) {
         RestAssured.baseURI=prop.getProperty(CONST_URL);
         RestAssured.basePath=prop.getProperty(CONST_PATH);
         Response response = given().auth().basic(prop.getProperty(CONST_USERNAME),prop.getProperty(CONST_PWD)).when().
                 delete(RestAssured.baseURI+RestAssured.basePath+ "/" + programId);
         System.out.println(" The Program ID to be deleted is :" +programId );
+        Reporter.log(" The Program ID to be deleted is :" +programId + " For Scenario :" +Scenario);
         System.out.println(" The Response Status Code is :" +response.statusCode());
-        Assert.assertEquals(response.statusCode(),Integer.parseInt(StatusCode));
+        Reporter.log(" The Response Status Code is :" +response.statusCode() + " For Scenario :" +Scenario);
+        Assert.assertEquals(response.statusCode(),Integer.parseInt(StatusCode),"Status Code Validation");
     }
 }

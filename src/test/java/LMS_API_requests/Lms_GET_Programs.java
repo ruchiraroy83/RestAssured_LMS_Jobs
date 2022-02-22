@@ -50,33 +50,37 @@ public class Lms_GET_Programs {
                 get(RestAssured.baseURI+RestAssured.basePath);
         int status_code = response.statusCode();
         System.out.println(response.asPrettyString());
-        Assert.assertEquals(status_code,200);
+        Reporter.log("Response is :" + response.asPrettyString() );
+        Assert.assertEquals(status_code,200,"Status Code Validation");
 
     }
 
 
     @Test(dataProvider = "getData")
-    public void get_program_id(String programId, String StatusCode) {
+    public void get_program_id(String Scenario,String programId, String StatusCode) {
         RestAssured.baseURI=prop.getProperty(CONST_URL);
         RestAssured.basePath=prop.getProperty(CONST_PATH);
         Response response = given().auth().basic(prop.getProperty(CONST_USERNAME),prop.getProperty(CONST_PWD)).when().
                 get(RestAssured.baseURI+RestAssured.basePath+ "/" + programId);
-        System.out.println(response.asPrettyString());
+        System.out.println("Response is :" +response.asPrettyString());
+        Reporter.log("Scenario is :"+Scenario+ ".And Response is :" + response.asPrettyString() );
         try {
             if(StatusCode.equals(Success_Status)) {
                 int pid = response.jsonPath().get(PROG_ID);
-                Assert.assertEquals(pid, Integer.parseInt(programId));
+                Assert.assertEquals(pid, Integer.parseInt(programId),"Validation of ProgramId");
                 JSON_Schema_Validation.cls_JSON_SchemaValidation(response,
                         prop.getProperty(CONST_PostSchemaFilePath));
             }
         } catch(Exception e ){
             System.out.println("ProgramID is entered is not valid");
+            Reporter.log("ProgramID is entered is not valid");
         }
 
 
         int status_code_actual = response.getStatusCode();
-        System.out.println(" The Program ID to be retrieved is :" +programId );
-        Assert.assertEquals(response.statusCode(),Integer.parseInt(StatusCode));
+        System.out.println(" The Program ID to be retrieved is :" +programId +" for Scenario :" +Scenario);
+        Reporter.log(" The Program ID to be retrieved is :" +programId +" for Scenario :" +Scenario);
+        Assert.assertEquals(response.statusCode(),Integer.parseInt(StatusCode),"Status Code Validation");
 
 
     }
